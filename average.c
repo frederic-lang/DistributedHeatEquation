@@ -5,10 +5,13 @@
 #include <math.h>
 #include <stdarg.h>
 
+// Global vars
 double p;
 int width, height, t;
 double* grid;
+int my_id, nb_proc;
 
+// Functions
 double delta(double* neighb) {
 	return (1 - p)*neighb[4] + (p/4)*(neighb[1]+neighb[3]+neighb[5]+neighb[7]);
 }
@@ -40,11 +43,19 @@ void init_grid(){ // initialize global vars, parse input data
 }
 
 void init_par(){ // initialize comm
+	// 9 communicators per PU, there are width*height PUs
+	
 }
 
 int main(int argc, char **argv) 
 {
 	init_grid();
+
+	MPI_Init(&argc,&argv);
+  	MPI_Comm_size(MPI_COMM_WORLD, &nb_proc);
+  	MPI_Comm_rank(MPI_COMM_WORLD, &my_id);
+
+  	init_par();
 
 	return 0; 
 }
